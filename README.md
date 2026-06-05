@@ -40,7 +40,18 @@ Navigate to [http://localhost:3000](http://localhost:3000) in your browser to vi
 ## 🛠️ Sandbox & Mock Mode
 To allow seamless local design development, the backend Auth and Database modules have been mocked:
 - **Mock Authentication**: Auth client & server configurations (`src/lib/auth.js` and `src/lib/auth-client.js`) return safe fallback properties, allowing sign-in states to run dynamically without active MongoDB instances.
-- **Client Routes**: All primary attendee, organizer, and administrator routes compile statically.
+- **MongoDB Connection & Fallback**: The app reads database configurations from `.env.local`. If the connection is down or unconfigured, it automatically falls back to an internal mock database class (`MockDb`) so events can be browsed and filtered without connection timeout crashes.
+
+### 🗄️ Database Configuration
+To connect to a live MongoDB/Atlas database:
+1. Open [.env.local](file:///mnt/File/Work/PH%20Projects/ticketo/.env.local) in the project root.
+2. Update your credentials and cluster domain:
+   ```env
+   MONGODB_URI=mongodb+srv://<username>:<password>@<your-cluster-url>/ticketo?retryWrites=true&w=majority
+   DB_NAME=ticketo
+   ```
+3. Restart the server (`npm run dev`) to apply the configuration.
+
 
 ---
 
