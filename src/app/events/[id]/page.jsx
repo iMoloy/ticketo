@@ -3,23 +3,50 @@ import { Card, Button } from "@heroui/react";
 import Image from "next/image";
 import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft } from "react-icons/fa";
 import BookingWidget from "@/components/BookingWidget";
+import { getDb } from "@/lib/db";
+import { ObjectId } from "mongodb";
+import EventNotFound from "@/components/EventNotFound";
 
-export default async function EventDetailsPage() {
+export default async function EventDetailsPage({ params }) {
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
+
+    const db = await getDb();
+    let eventDoc = null;
+    try {
+        eventDoc = await db.collection("events").findOne({ _id: new ObjectId(id) });
+    } catch (e) {
+        // Invalid ObjectId gracefully handled
+    }
+
+    if (!eventDoc) {
+        return <EventNotFound />;
+    }
+
+    let organization = null;
+    if (eventDoc.organizationId) {
+        try {
+            organization = await db.collection("organizations").findOne({ _id: new ObjectId(eventDoc.organizationId) });
+        } catch (e) {}
+    }
+    if (!organization && eventDoc.organizerEmail) {
+        organization = await db.collection("organizations").findOne({ organizerEmail: eventDoc.organizerEmail });
+    }
+
     const event = {
-        title: "Global Tech Summit 2026",
-        category: "Technology",
-        banner: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4",
-        date: "November 12, 2026",
-        location: "San Francisco, CA",
-        ticketPrice: 149.00,
-        description: "Join us for the premier tech event of the year, bringing together industry leaders, innovators, and developers from around the globe to discuss the future of AI, cloud, and open source development.",
-        organization: {
-            organizationName: "Global Tech Group",
+        ...eventDoc,
+        _id: eventDoc._id.toString(),
+        organization: organization ? {
+            ...organization,
+            _id: organization._id.toString()
+        } : {
+            organizationName: "Featured Sponsor",
             logo: "https://images.unsplash.com/photo-1549880181-56a44cf8a4a1",
-            description: "Curator of leading corporate panel discussions, tech events, and community music festivals.",
-            website: "globaltechgroup.com"
+            description: "A community organizer supporting Ticketo platform events.",
+            website: "ticketo.com"
         }
     };
+
 
     return (
         <div className="min-h-screen py-16 px-6 max-w-6xl mx-auto w-full space-y-12 bg-[#080c16]">
