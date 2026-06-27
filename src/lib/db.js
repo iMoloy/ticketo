@@ -128,3 +128,5 @@ export async function getDb(dbName = process.env.DB_NAME || "ticketo") {
     return new MockDb();
   }
 }
+
+export { clientPromise };
