@@ -1,40 +1,50 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Card,
-  Table,
-  TableContent,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Chip
-} from "@heroui/react";
+import { Card, Table, TableContent, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Spinner } from "@heroui/react";
 
 const TicketsTable = () => {
-  const tickets = [
-    {
-      _id: "t1",
-      eventId: "1",
-      eventTitle: "Global Tech Summit 2026",
-      bookingDate: "2026-06-03T10:00:00Z",
-      quantity: 2,
-      amount: 298.00,
-      paymentStatus: "paid"
-    },
-    {
-      _id: "t2",
-      eventId: "2",
-      eventTitle: "Symphony Under the Stars",
-      bookingDate: "2026-05-15T14:30:00Z",
-      quantity: 1,
-      amount: 45.00,
-      paymentStatus: "paid"
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchTickets() {
+      try {
+        const res = await fetch("/api/bookings");
+        const data = await res.json();
+        if (res.status === 200) {
+          setTickets(data || []);
+        } else {
+          setError(data.error || "Failed to load tickets.");
+        }
+      } catch (err) {
+        console.error("Fetch tickets error:", err);
+        setError("Network error loading tickets.");
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+    fetchTickets();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="py-12 flex justify-center items-center">
+        <Spinner color="secondary" size="lg" />
+      </div>
+    );
+  }
 
   return (
     <Card className="border border-white/5 bg-slate-900/40 backdrop-blur-xl shadow-2xl p-6 rounded-2xl">
+      {error && (
+        <div className="mb-4 p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl text-xs font-semibold text-center">
+          {error}
+        </div>
+      )}
+
       <div className="p-0 overflow-x-auto">
         <Table aria-label="My Tickets Table" removeWrapper>
           <TableContent>
@@ -53,17 +63,19 @@ const TicketsTable = () => {
                       {ticket.eventTitle}
                     </Link>
                   </TableCell>
-                  <TableCell className="py-4 px-6 align-middle text-slate-300 font-medium">{new Date(ticket.bookingDate).toLocaleDateString()}</TableCell>
+                  <TableCell className="py-4 px-6 align-middle text-slate-300 font-medium">
+                    {new Date(ticket.bookingDate).toLocaleDateString()}
+                  </TableCell>
                   <TableCell className="py-4 px-6 align-middle text-slate-300 font-medium">{ticket.quantity} ticket(s)</TableCell>
                   <TableCell className="py-4 px-6 align-middle font-semibold text-green-400">${ticket.amount?.toFixed(2)}</TableCell>
                   <TableCell className="py-4 px-6 align-middle">
                     <Chip
                       size="sm"
                       variant="flat"
-                      color={ticket.paymentStatus === "failed" ? "danger" : "success"}
-                      className="font-bold uppercase text-[10px] tracking-wider border border-white/5 px-2"
+                      color="success"
+                      className="font-bold uppercase text-[10px] tracking-wider border border-green-500/20 px-2"
                     >
-                      {ticket.paymentStatus}
+                      Paid
                     </Chip>
                   </TableCell>
                 </TableRow>
