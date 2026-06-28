@@ -1,6 +1,7 @@
+import path from "path";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["better-auth"],
   images: {
     remotePatterns: [
       {
@@ -16,6 +17,24 @@ const nextConfig = {
         hostname: "api.dicebear.com",
       },
     ],
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      react: path.resolve("./node_modules/react"),
+      "react-dom": path.resolve("./node_modules/react-dom"),
+      "better-auth/react$": path.resolve("./node_modules/better-auth/dist/client/react/index.mjs"),
+      "better-auth/react": path.resolve("./node_modules/better-auth/dist/client/react/index.mjs"),
+    };
+    return config;
+  },
+  turbopack: {
+    resolveAlias: {
+      react: "./node_modules/react",
+      "react-dom": "./node_modules/react-dom",
+      "better-auth/react": "./node_modules/better-auth/dist/client/react/index.mjs",
+      "better-auth/react$": "./node_modules/better-auth/dist/client/react/index.mjs",
+    },
   },
 };
 

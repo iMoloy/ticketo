@@ -36,6 +36,9 @@ export default async function EventDetailsPage({ params }) {
     const event = {
         ...eventDoc,
         _id: eventDoc._id.toString(),
+        date: eventDoc.date instanceof Date 
+            ? eventDoc.date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+            : new Date(eventDoc.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
         organization: organization ? {
             ...organization,
             _id: organization._id.toString()
@@ -146,7 +149,7 @@ export default async function EventDetailsPage({ params }) {
 
                 {/* Right Column: Ticket Booking Widget */}
                 <div className="space-y-6">
-                    <BookingWidget ticketPrice={event.ticketPrice} availableSeats={100} />
+                    <BookingWidget eventId={event._id} ticketPrice={event.ticketPrice} availableSeats={event.availableSeats} />
                 </div>
             </div>
         </div>

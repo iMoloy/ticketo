@@ -19,6 +19,9 @@ import { Button, Drawer } from "@heroui/react";
 import Logo from "./Logo";
 import Image from "next/image";
 
+import { useSession, signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+
 // Menu items for each role
 const MENU_BY_ROLE = {
   attendee: [
@@ -42,9 +45,14 @@ const MENU_BY_ROLE = {
 
 export default function DashboardSidebar({ role = "organizer" }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: sessionData } = useSession();
+  const user = sessionData?.user;
 
-  const handleLogout = () => {
-    alert("Sign Out Clicked! (Design Only)");
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/");
+    router.refresh();
   };
 
   const menuItems = MENU_BY_ROLE[role] || MENU_BY_ROLE.attendee;
@@ -58,6 +66,9 @@ export default function DashboardSidebar({ role = "organizer" }) {
     }
     return `/dashboard/${role}/${tabKey}`;
   };
+
+  const displayName = user?.name || "Jane Doe";
+  const userAvatar = user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=7c3aed&color=fff&bold=true`;
 
   const SidebarContent = () => (
     <div className="h-full flex flex-col bg-slate-950/80 backdrop-blur-xl">
@@ -73,14 +84,14 @@ export default function DashboardSidebar({ role = "organizer" }) {
             <Image
               width={40}
               height={40}
-              src={`https://ui-avatars.com/api/?name=${encodeURIComponent("Jane Doe")}&background=7c3aed&color=fff&bold=true`}
+              src={userAvatar}
               alt="Avatar"
               className="object-cover w-full h-full"
             />
           </div>
           <div className="overflow-hidden">
             <p className="text-white text-sm font-bold truncate leading-tight">
-              Jane Doe
+              {displayName}
             </p>
             <span className={`text-[10px] font-bold uppercase tracking-wider ${role === "admin" ? "text-yellow-400" : role === "organizer" ? "text-indigo-400" : "text-pink-400"}`}>
               {role}

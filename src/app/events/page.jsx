@@ -75,11 +75,25 @@ export default async function BrowseEventsPage({ searchParams }) {
         query.location = { $regex: new RegExp(`^${location}$`, "i") };
     }
 
-    const rawEvents = await db.collection("events").find(query).toArray();
+    const page = parseInt(params?.page) || 1;
+    const limit = 6;
+    const skip = (page - 1) * limit;
+
+    const totalCount = await db.collection("events").countDocuments(query);
+    const rawEvents = await db
+        .collection("events")
+        .find(query)
+        .sort({ date: 1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+        
     const events = rawEvents.map((doc) => ({
         ...doc,
         _id: doc._id.toString()
     }));
+
+    const totalPages = Math.ceil(totalCount / limit);
 
     return (
         <div className="min-h-screen py-16 px-6 max-w-7xl mx-auto w-full space-y-12 bg-[#080c16]">
@@ -111,11 +125,40 @@ export default async function BrowseEventsPage({ searchParams }) {
                     ))}
                 </div>
             }>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {events.map((event) => (
-                        <EventCard key={event._id} event={event} buttonText="View Details" />
-                    ))}
-                </div>
+                {events.length === 0 ? (
+                    <div className="text-center py-20 bg-slate-950/20 rounded-3xl border border-white/5">
+                        <p className="text-slate-400 text-sm">No events found matching your search criteria.</p>
+                    </div>
+                ) : (
+                    <div className="space-y-12">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {events.map((event) => (
+                                <EventCard key={event._id} event={event} buttonText="View Details" />
+                            ))}
+                        </div>
+
+                        {/* PAGINATION */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center items-center gap-4 pt-8 border-t border-white/5">
+                                <Link
+                                    href={`/events?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&location=${encodeURIComponent(location)}&page=${page - 1}`}
+                                    className={`inline-flex items-center justify-center font-bold text-xs h-10 px-5 rounded-xl border border-white/10 text-white transition hover:bg-white/5 ${page <= 1 ? "pointer-events-none opacity-40" : ""}`}
+                                >
+                                    Previous
+                                </Link>
+                                <span className="text-slate-400 text-xs font-semibold">
+                                    Page {page} of {totalPages}
+                                </span>
+                                <Link
+                                    href={`/events?search=${encodeURIComponent(search)}&category=${encodeURIComponent(category)}&location=${encodeURIComponent(location)}&page=${page + 1}`}
+                                    className={`inline-flex items-center justify-center font-bold text-xs h-10 px-5 rounded-xl border border-white/10 text-white transition hover:bg-white/5 ${page >= totalPages ? "pointer-events-none opacity-40" : ""}`}
+                                >
+                                    Next
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                )}
             </Suspense>
         </div>
     );
