@@ -10,21 +10,40 @@ import { FaCheckCircle, FaExclamationTriangle, FaArrowRight } from "react-icons/
 function PaymentSuccessContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const sessionId = searchParams.get("session_id");
+    const sessionId = searchParams.get("session_id") || searchParams.get("sessionId");
 
-    const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
-    const [booking, setBooking] = useState({
-        eventTitle: "Global Tech Summit 2026",
-        attendeeEmail: "attendee@example.com",
-        quantity: 2,
-        amount: 298.00,
-        transactionId: "ch_mock_stripe_transaction_12345"
-    });
+    const [booking, setBooking] = useState(null);
 
     useEffect(() => {
-        // Static mockup, no verification fetch needed
+        if (!sessionId) {
+            setError("No session ID was provided for verification.");
+            setLoading(false);
+            return;
+        }
+
+        async function verifySession() {
+            try {
+                const res = await fetch(`/api/stripe/verify-session?session_id=${sessionId}`);
+                const data = await res.json();
+
+                if (res.status === 200 && data.success && data.type === "booking") {
+                    setBooking(data.booking);
+                    setSuccess(true);
+                } else {
+                    setError(data.error || "Failed to verify payment session.");
+                }
+            } catch (err) {
+                console.error("Payment verify session error:", err);
+                setError("Network error occurred during payment verification.");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        verifySession();
     }, [sessionId]);
 
     return (
