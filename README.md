@@ -3,9 +3,9 @@
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![BetterAuth](https://img.shields.io/badge/BetterAuth-Mocked-red?style=for-the-badge&logo=auth0)](https://better-auth.com/)
+[![BetterAuth](https://img.shields.io/badge/BetterAuth-Active-green?style=for-the-badge&logo=auth0)](https://better-auth.com/)
 
-A premium, full-stack event ticket booking and management platform. Currently configured in **sandbox/mock mode** for frontend design and testing, allowing all dashboards and payment pages to be fully navigable without database crashes.
+A premium, full-stack event ticket booking and management platform integrated with a live MongoDB database, BetterAuth session authentication, and Stripe payments (with automatic sandboxed fallback).
 
 ---
 
@@ -37,20 +37,25 @@ Navigate to [http://localhost:3000](http://localhost:3000) in your browser to vi
 
 ---
 
-## 🛠️ Sandbox & Mock Mode
-To allow seamless local design development, the backend Auth and Database modules have been mocked:
-- **Mock Authentication**: Auth client & server configurations (`src/lib/auth.js` and `src/lib/auth-client.js`) return safe fallback properties, allowing sign-in states to run dynamically without active MongoDB instances.
-- **MongoDB Connection & Fallback**: The app reads database configurations from `.env.local`. If the connection is down or unconfigured, it automatically falls back to an internal mock database class (`MockDb`) so events can be browsed and filtered without connection timeout crashes.
+## 🛠️ Database & Integration Config
 
-### 🗄️ Database Configuration
-To connect to a live MongoDB/Atlas database:
+The backend is fully database-driven. All data queries, bookings, dashboard charts, and session updates are processed dynamically through MongoDB.
+
+### 🗄️ Database & Auth Setup
+To connect your own MongoDB database and initialize user sessions:
 1. Open [.env.local](file:///mnt/File/Work/PH%20Projects/ticketo/.env.local) in the project root.
-2. Update your credentials and cluster domain:
+2. Update the values:
    ```env
    MONGODB_URI=mongodb+srv://<username>:<password>@<your-cluster-url>/ticketo?retryWrites=true&w=majority
    DB_NAME=ticketo
+   NEXT_PUBLIC_USE_REAL_AUTH=true
+   BETTER_AUTH_SECRET=<your-custom-secret-key>
    ```
-3. Restart the server (`npm run dev`) to apply the configuration.
+
+### 💳 Stripe & Sandbox checkout
+- The platform supports live Stripe payment sessions for ticket booking and premium organizer status upgrades ($49 one-time).
+- **Graceful Sandboxing**: If Stripe credentials (`STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`) are missing, the checkout flow automatically redirects to a custom **Simulated Sandbox payment viewport** (`/simulated-payment`), allowing you to test bookings, seat decrements, and role upgrades without live API keys.
+
 
 
 ---
