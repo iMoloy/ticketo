@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardHeader, Form, Input, Button, TextArea, Spinner } from "@heroui/react";
+import { toast } from "react-toastify";
 
 const OrganizationForm = () => {
     const [orgName, setOrgName] = useState("");
@@ -57,12 +58,15 @@ const OrganizationForm = () => {
 
             const data = await res.json();
             if (res.status === 200 && data.success) {
+                toast.success("Organization profile saved successfully!");
                 setSuccess("Organization profile saved successfully!");
             } else {
+                toast.error(data.error || "Failed to save profile.");
                 setError(data.error || "Failed to save profile.");
             }
         } catch (err) {
             console.error("Submit organization error:", err);
+            toast.error("Network error occurred saving profile.");
             setError("Network error occurred.");
         } finally {
             setSaving(false);
@@ -76,6 +80,7 @@ const OrganizationForm = () => {
             </div>
         );
     }
+
 
     return (
         <div className="mt-6 space-y-6 max-w-3xl">

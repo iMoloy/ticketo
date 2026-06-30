@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, Button, Input } from "@heroui/react";
 import { FaCheck } from "react-icons/fa";
 import { useSession } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 export default function BookingWidget({ eventId, ticketPrice = 49.99, availableSeats = 120 }) {
   const router = useRouter();
@@ -43,15 +44,18 @@ export default function BookingWidget({ eventId, ticketPrice = 49.99, availableS
       if (res.status === 200 && data.url) {
         window.location.href = data.url;
       } else {
+        toast.error(data.error || "Failed to create checkout session.");
         setError(data.error || "Failed to create checkout session.");
         setLoading(false);
       }
     } catch (err) {
       console.error("BookingWidget click error:", err);
+      toast.error("Network error occurred. Please try again.");
       setError("Network error occurred. Please try again.");
       setLoading(false);
     }
   };
+
 
   const handleQuantityChange = (e) => {
     const val = parseInt(e.target.value);

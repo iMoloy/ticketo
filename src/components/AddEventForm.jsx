@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, Form, Input, Button, Select, SelectTrigger, SelectValue, SelectIndicator, SelectPopover, ListBox, ListBoxItem, TextArea, Spinner } from "@heroui/react";
+import { toast } from "react-toastify";
 
 const CATEGORIES = ["Music", "Tech", "Sports", "Arts", "Business", "Food", "Other"];
 const LOCATIONS = ["New York", "San Francisco", "London", "Dhaka", "Tokyo", "Berlin", "Online"];
@@ -70,12 +71,14 @@ const AddEventForm = ({ eventId = null }) => {
         setSuccess("");
 
         if (!category) {
+            toast.error("Please select an event category.");
             setError("Please select an event category.");
             setSaving(false);
             return;
         }
 
         if (!location) {
+            toast.error("Please select an event location.");
             setError("Please select an event location.");
             setSaving(false);
             return;
@@ -106,7 +109,9 @@ const AddEventForm = ({ eventId = null }) => {
 
             const data = await res.json();
             if (res.status === 200 && (data.success || data.eventId || eventId)) {
-                setSuccess(eventId ? "Event updated successfully! (Status reset to pending moderation)" : "Event hosted successfully! Pending admin approval.");
+                const msg = eventId ? "Event updated successfully! (Status reset to pending moderation)" : "Event hosted successfully! Pending admin approval.";
+                toast.success(msg);
+                setSuccess(msg);
                 
                 // If hosting a new event, clear inputs
                 if (!eventId) {
@@ -125,15 +130,18 @@ const AddEventForm = ({ eventId = null }) => {
                     router.push("/dashboard/organizer/manage-events");
                 }, 2000);
             } else {
+                toast.error(data.error || "Failed to submit event details.");
                 setError(data.error || "Failed to submit event details.");
             }
         } catch (err) {
             console.error("Submit event form error:", err);
+            toast.error("Network error occurred.");
             setError("Network error occurred.");
         } finally {
             setSaving(false);
         }
     };
+
 
     if (loading) {
         return (

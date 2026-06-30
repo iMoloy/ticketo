@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent as CardBody, CardHeader, Input, Button, Form, TextArea, Spinner } from "@heroui/react";
 import { FaDollarSign, FaTicketAlt, FaCalendarDay } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const AttendeeOverviewItems = () => {
     const [loading, setLoading] = useState(true);
@@ -97,13 +98,15 @@ const AttendeeOverviewItems = () => {
 
             const data = await res.json();
             if (res.status === 200 && data.success) {
+                toast.success("Profile updated successfully!");
                 setSuccess("Profile updated successfully!");
-                // Optionally refresh page or session context
             } else {
+                toast.error(data.error || "Failed to update profile.");
                 setError(data.error || "Failed to update profile.");
             }
         } catch (err) {
             console.error("Save profile error:", err);
+            toast.error("Network error saving profile.");
             setError("Network error saving profile.");
         } finally {
             setSubmitLoading(false);
@@ -130,6 +133,7 @@ const AttendeeOverviewItems = () => {
                     {success}
                 </div>
             )}
+
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
