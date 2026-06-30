@@ -133,7 +133,17 @@ function LoginForm() {
                     className="w-full border-white/10 hover:bg-white/5 hover:border-white/20 text-white font-semibold h-11"
                     radius="lg"
                     startContent={<FaGoogle className="text-pink-500" />}
-                    onClick={() => toast.info("Google OAuth configured for live setups.")}
+                    onClick={async () => {
+                        try {
+                            await signIn.social({
+                                provider: "google",
+                                callbackURL: "/dashboard",
+                            });
+                        } catch (err) {
+                            console.error("Google login error:", err);
+                            toast.error("Google login redirection failed.");
+                        }
+                    }}
                 >
                     Google Account
                 </Button>

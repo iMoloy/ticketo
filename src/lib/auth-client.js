@@ -30,6 +30,13 @@ const mockAuthClient = {
         data: { user: { name: "Jane Doe", email, role: "organizer" } },
         error: null
       };
+    },
+    social: async ({ provider }) => {
+      alert(`Mock Social Login with ${provider} Successful! (Sandbox Mode)`);
+      return {
+        data: { user: { name: "Jane Doe", email: "jane.google@example.com", role: "organizer" } },
+        error: null
+      };
     }
   },
   signOut: async () => {
