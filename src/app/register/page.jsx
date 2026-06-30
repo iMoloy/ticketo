@@ -100,7 +100,7 @@ function RegisterForm() {
                         placeholder="John Doe"
                         labelPlacement="outside"
                         value={name}
-                        onValueChange={setName}
+                        onChange={(e) => setName(e.target.value)}
                         startContent={<FaUser className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         required
@@ -112,7 +112,7 @@ function RegisterForm() {
                         type="email"
                         labelPlacement="outside"
                         value={email}
-                        onValueChange={setEmail}
+                        onChange={(e) => setEmail(e.target.value)}
                         startContent={<FaEnvelope className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         required
@@ -123,7 +123,7 @@ function RegisterForm() {
                         placeholder="https://example.com/avatar.jpg"
                         labelPlacement="outside"
                         value={image}
-                        onValueChange={setImage}
+                        onChange={(e) => setImage(e.target.value)}
                         startContent={<FaImage className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                     />
@@ -135,7 +135,7 @@ function RegisterForm() {
                         type="password"
                         labelPlacement="outside"
                         value={password}
-                        onValueChange={setPassword}
+                        onChange={(e) => setPassword(e.target.value)}
                         startContent={<FaLock className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         required

@@ -92,7 +92,7 @@ function LoginForm() {
                         type="email"
                         labelPlacement="outside"
                         value={email}
-                        onValueChange={setEmail}
+                        onChange={(e) => setEmail(e.target.value)}
                         startContent={<FaEnvelope className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         required
@@ -106,7 +106,7 @@ function LoginForm() {
                         type="password"
                         labelPlacement="outside"
                         value={password}
-                        onValueChange={setPassword}
+                        onChange={(e) => setPassword(e.target.value)}
                         startContent={<FaLock className="text-slate-400 text-sm" />}
                         className="w-full bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         required

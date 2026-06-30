@@ -193,7 +193,7 @@ const AttendeeOverviewItems = () => {
                             labelPlacement="outside"
                             placeholder="John Doe"
                             value={profile.name}
-                            onValueChange={(val) => setProfile({ ...profile, name: val })}
+                            onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                             className="bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                             required
                         />
@@ -203,7 +203,7 @@ const AttendeeOverviewItems = () => {
                             labelPlacement="outside"
                             placeholder="https://api.dicebear.com/7.x/adventurer/svg?seed=John"
                             value={profile.image}
-                            onValueChange={(val) => setProfile({ ...profile, image: val })}
+                            onChange={(e) => setProfile({ ...profile, image: e.target.value })}
                             className="bg-slate-900/50 border-white/10 hover:border-pink-500/50 focus-within:!border-pink-500"
                         />
 
@@ -213,7 +213,7 @@ const AttendeeOverviewItems = () => {
                             labelPlacement="outside"
                             placeholder="Tell us about yourself..."
                             value={profile.bio}
-                            onValueChange={(val) => setProfile({ ...profile, bio: val })}
+                            onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                             className="w-full bg-slate-900/50 border border-white/10 rounded-xl focus:outline-none min-h-[100px] text-white text-sm"
                         />
 
