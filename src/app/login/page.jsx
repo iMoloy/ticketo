@@ -31,7 +31,7 @@ function LoginForm() {
             const { data, error } = await signIn.email({
                 email,
                 password,
-                dontRedirect: true,
+                rememberMe: true,
             });
 
             if (error) {
@@ -40,9 +40,14 @@ function LoginForm() {
                 return;
             }
 
-            if (data?.user) {
-                toast.success(`Welcome back, ${data.user.name || "User"}!`);
-                
+            // Session is set — fetch it to get the role
+            const sessionRes = await fetch("/api/auth/get-session");
+            const session = sessionRes.ok ? await sessionRes.json() : null;
+            const user = session?.user || data?.user;
+
+            if (user) {
+                toast.success(`Welcome back, ${user.name || "User"}!`);
+
                 // Check if redirect query param exists
                 const redirect = searchParams.get("redirect");
                 if (redirect) {
@@ -51,7 +56,7 @@ function LoginForm() {
                 }
 
                 // Default role-based routing
-                const role = data.user.role;
+                const role = user.role;
                 if (role === "admin") {
                     router.push("/dashboard/admin");
                 } else if (role === "organizer") {

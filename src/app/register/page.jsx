@@ -44,8 +44,12 @@ function RegisterForm() {
                 password,
                 name,
                 image: avatarUrl,
-                role,
-                dontRedirect: true,
+                additionalFields: {
+                    role,
+                    isPremium: false,
+                    isBlocked: false,
+                },
+                callbackURL: role === "organizer" ? "/dashboard/organizer" : "/dashboard/attendee",
             });
 
             if (error) {
