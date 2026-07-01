@@ -16,6 +16,10 @@ export async function GET(request) {
     const limit = parseInt(searchParams.get("limit")) || 6;
     const skip = (page - 1) * limit;
 
+    // Support comma-separated multi-value filters using $in
+    const categories = category ? category.split(",").map((c) => c.trim()).filter(Boolean) : [];
+    const locations = location ? location.split(",").map((l) => l.trim()).filter(Boolean) : [];
+
     const own = searchParams.get("own") === "true";
 
     const db = await getDb();
@@ -45,11 +49,17 @@ export async function GET(request) {
     if (search) {
       query.title = { $regex: search, $options: "i" };
     }
-    if (category) {
-      query.category = { $regex: new RegExp(`^${category}$`, "i") };
+    // Use $in for multiple categories, $regex for single
+    if (categories.length > 1) {
+      query.category = { $in: categories };
+    } else if (categories.length === 1) {
+      query.category = { $regex: new RegExp(`^${categories[0]}$`, "i") };
     }
-    if (location) {
-      query.location = { $regex: new RegExp(`^${location}$`, "i") };
+    // Use $in for multiple locations, $regex for single
+    if (locations.length > 1) {
+      query.location = { $in: locations };
+    } else if (locations.length === 1) {
+      query.location = { $regex: new RegExp(`^${locations[0]}$`, "i") };
     }
 
     const totalCount = await db.collection("events").countDocuments(query);
