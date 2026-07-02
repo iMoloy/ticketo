@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, Table, TableContent, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Spinner } from "@heroui/react";
+import TicketDownloadButton from "@/components/TicketDownloadButton";
 
 const TicketsTable = () => {
   const [tickets, setTickets] = useState([]);
@@ -54,6 +55,7 @@ const TicketsTable = () => {
               <TableColumn className="py-4 px-6 text-slate-400 font-extrabold uppercase text-[11px] tracking-wider border-b border-white/5 bg-slate-950/20">QUANTITY</TableColumn>
               <TableColumn className="py-4 px-6 text-slate-400 font-extrabold uppercase text-[11px] tracking-wider border-b border-white/5 bg-slate-950/20">TOTAL PAID</TableColumn>
               <TableColumn className="py-4 px-6 text-slate-400 font-extrabold uppercase text-[11px] tracking-wider border-b border-white/5 bg-slate-950/20">STATUS</TableColumn>
+              <TableColumn className="py-4 px-6 text-slate-400 font-extrabold uppercase text-[11px] tracking-wider border-b border-white/5 bg-slate-950/20">TICKET</TableColumn>
             </TableHeader>
             <TableBody emptyContent={<p className="text-slate-500 py-10 text-center font-medium">No ticket passes booked yet. Explore Browse Events!</p>}>
               {tickets.map((ticket) => (
@@ -77,6 +79,9 @@ const TicketsTable = () => {
                     >
                       Paid
                     </Chip>
+                  </TableCell>
+                  <TableCell className="py-4 px-6 align-middle">
+                    <TicketDownloadButton ticket={ticket} />
                   </TableCell>
                 </TableRow>
               ))}
