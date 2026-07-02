@@ -14,7 +14,8 @@ import {
   FaSignOutAlt,
   FaHome,
   FaBars,
-  FaHeart
+  FaHeart,
+  FaChartBar
 } from "react-icons/fa";
 import { Button, Drawer } from "@heroui/react";
 import Logo from "./Logo";
@@ -37,6 +38,7 @@ const MENU_BY_ROLE = {
     { key: "add-event", label: "Add Event", icon: FaPlus },
     { key: "manage-events", label: "Manage Events", icon: FaCalendarAlt },
     { key: "attendees", label: "Attendees", icon: FaUsers },
+    { key: "analytics", label: "Analytics", icon: FaChartBar },
   ],
   admin: [
     { key: "users", label: "Users", icon: FaUserShield },
