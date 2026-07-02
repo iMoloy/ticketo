@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button, Textarea as TextArea, Avatar, Spinner } from "@heroui/react";
+import { Button, TextArea, Avatar, Spinner } from "@heroui/react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { toast } from "react-toastify";
 
