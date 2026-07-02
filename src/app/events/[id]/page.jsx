@@ -5,6 +5,7 @@ import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft, FaStar } from "react-icons/
 import BookingWidget from "@/components/BookingWidget";
 import ReviewSection from "@/components/ReviewSection";
 import ShareButton from "@/components/ShareButton";
+import CommentsSection from "@/components/CommentsSection";
 import { getDb } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import EventNotFound from "@/components/EventNotFound";
@@ -168,6 +169,9 @@ export default async function EventDetailsPage({ params }) {
 
                     {/* Reviews Section */}
                     <ReviewSection eventId={event._id} />
+
+                    {/* Comments / Q&A Section */}
+                    <CommentsSection eventId={event._id} />
                 </div>
 
                 {/* Right Column: Ticket Booking Widget */}
