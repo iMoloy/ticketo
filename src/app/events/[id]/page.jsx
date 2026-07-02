@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Card, Button } from "@heroui/react";
 import Image from "next/image";
-import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft } from "react-icons/fa";
+import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft, FaStar } from "react-icons/fa";
 import BookingWidget from "@/components/BookingWidget";
+import ReviewSection from "@/components/ReviewSection";
 import { getDb } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import EventNotFound from "@/components/EventNotFound";
@@ -18,6 +19,13 @@ export default async function EventDetailsPage({ params }) {
     } catch (e) {
         // Invalid ObjectId gracefully handled
     }
+
+    // Fetch review stats for this event
+    const reviews = await db.collection("reviews").find({ eventId: id }).toArray();
+    const totalReviews = reviews.length;
+    const avgRating = totalReviews > 0
+        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
+        : null;
 
     if (!eventDoc) {
         return <EventNotFound />;
@@ -78,6 +86,14 @@ export default async function EventDetailsPage({ params }) {
                 <span className="absolute top-6 left-6 bg-pink-500 text-white font-extrabold text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-pink-400/20 shadow-lg z-10">
                     {event.category}
                 </span>
+
+                {avgRating && (
+                    <span className="absolute top-6 right-6 flex items-center gap-1.5 bg-black/60 backdrop-blur text-yellow-400 font-bold text-sm px-3 py-2 rounded-full border border-yellow-400/20 shadow-lg z-10">
+                        <FaStar />
+                        {avgRating}
+                        <span className="text-white/60 font-normal text-xs">({totalReviews})</span>
+                    </span>
+                )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -145,6 +161,9 @@ export default async function EventDetailsPage({ params }) {
                             </div>
                         </Card>
                     </div>
+
+                    {/* Reviews Section */}
+                    <ReviewSection eventId={event._id} />
                 </div>
 
                 {/* Right Column: Ticket Booking Widget */}
