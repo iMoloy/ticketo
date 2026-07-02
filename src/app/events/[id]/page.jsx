@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaCalendarAlt, FaMapMarkerAlt, FaArrowLeft, FaStar } from "react-icons/fa";
 import BookingWidget from "@/components/BookingWidget";
 import ReviewSection from "@/components/ReviewSection";
+import ShareButton from "@/components/ShareButton";
 import { getDb } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import EventNotFound from "@/components/EventNotFound";
@@ -100,9 +101,12 @@ export default async function EventDetailsPage({ params }) {
                 {/* Left Column: Details & Description */}
                 <div className="lg:col-span-2 space-y-10">
                     <div className="space-y-4">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                            {event.title}
-                        </h1>
+                        <div className="flex items-start justify-between gap-4 flex-wrap">
+                            <h1 className="text-4xl font-extrabold tracking-tight text-white md:text-5xl flex-1">
+                                {event.title}
+                            </h1>
+                            <ShareButton title={event.title} eventId={event._id} />
+                        </div>
 
                         <div className="flex flex-wrap gap-6 text-sm text-slate-300">
                             <div className="flex items-center gap-2">
