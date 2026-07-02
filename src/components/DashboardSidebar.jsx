@@ -13,7 +13,8 @@ import {
   FaUserShield,
   FaSignOutAlt,
   FaHome,
-  FaBars
+  FaBars,
+  FaHeart
 } from "react-icons/fa";
 import { Button, Drawer } from "@heroui/react";
 import Logo from "./Logo";
@@ -28,6 +29,7 @@ const MENU_BY_ROLE = {
     { key: "overview", label: "Overview", icon: FaUserCircle },
     { key: "tickets", label: "My Tickets", icon: FaTicketAlt },
     { key: "payments", label: "Payments", icon: FaHistory },
+    { key: "wishlist", label: "Wishlist", icon: FaHeart },
   ],
   organizer: [
     { key: "overview", label: "Overview", icon: FaUsers },
