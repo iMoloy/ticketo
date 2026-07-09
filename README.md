@@ -1,87 +1,172 @@
-# Ticketo 🎟️ — Premium Event Ticket Booking & Management Platform
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![BetterAuth](https://img.shields.io/badge/BetterAuth-Active-green?style=for-the-badge&logo=auth0)](https://better-auth.com/)
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1a0a2e,100:2d1b69&height=180&section=header&text=Ticketo&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Premium%20Event%20Ticket%20Booking%20%26%20Management%20Platform&descAlignY=58&descSize=15&descColor=c084fc&animation=fadeIn" width="100%" alt="Ticketo banner" />
 
-A premium, full-stack event ticket booking and management platform integrated with a live MongoDB database, BetterAuth session authentication, and Stripe payments (with automatic sandboxed fallback).
+  [![Live App](https://img.shields.io/badge/🌐%20Live%20App-ticketo.vercel.app-a855f7?style=for-the-badge&logo=vercel&logoColor=white)](https://ticketo-app.vercel.app)
+  [![GitHub](https://img.shields.io/badge/GitHub-iMoloy%2Fticketo-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/iMoloy/ticketo)
 
----
-
-## 📋 Project Requirements & Specifications
-
-The complete working document and feature requirements for this project can be accessed here:
-👉 **[Google Doc Project Requirements](https://docs.google.com/document/d/1BHW20BQy6gArwIcOpgWjYrqbcJ4rm-tgvXgFJ1pO0CQ/edit?usp=sharing)**
+</div>
 
 ---
 
-## 🚀 Getting Started
+## 📖 Overview
 
-Follow these steps to set up and run the client application locally:
+**Ticketo** is a premium, full-stack event ticket booking and management platform. Integrated with a live **MongoDB** database, **Better Auth** session authentication, and **Stripe** payments (with automatic sandbox fallback). Role-based dashboards for Attendees, Organizers, and Admins make it a complete end-to-end events platform.
 
-### 1. Installation
-Clone the repository and install the project dependencies:
-```bash
-npm install
-```
-
-### 2. Run the Development Server
-Start the local server in development mode:
-```bash
-npm run dev
-```
-
-### 3. Open the Application
-Navigate to [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+> **Live at** → [https://ticketo-app.vercel.app](https://ticketo-app.vercel.app)
 
 ---
 
-## 🛠️ Database & Integration Config
+## 🛠️ Technologies Used
 
-The backend is fully database-driven. All data queries, bookings, dashboard charts, and session updates are processed dynamically through MongoDB.
+| Technology | Version | Purpose |
+|---|---|---|
+| [Next.js](https://nextjs.org/) | `16.2.7` | React framework (App Router) |
+| [React](https://react.dev/) | `19.2.4` | UI library |
+| [Tailwind CSS](https://tailwindcss.com/) | `^4` | Utility-first styling |
+| [HeroUI](https://heroui.com/) | `^3.1.0` | Premium component library |
+| [Better Auth](https://www.better-auth.com/) | `^1.6.14` | Session authentication |
+| [MongoDB](https://www.mongodb.com/) | `^7.2.0` | Database |
+| [Stripe](https://stripe.com/) | `^22.3.0` | Payment processing |
+| [Recharts](https://recharts.org/) | `^3.9.1` | Dashboard analytics charts |
+| [React Icons](https://react-icons.github.io/) | `^5.6.0` | Icon library |
+| [React Toastify](https://fkhadra.github.io/react-toastify/) | `^11.1.0` | Toast notifications |
+| [Google Fonts — Outfit](https://fonts.google.com/specimen/Outfit) | — | Typography |
 
-### 🗄️ Database & Auth Setup
-To connect your own MongoDB database and initialize user sessions:
-1. Open [.env.local](file:///mnt/File/Work/PH%20Projects/ticketo/.env.local) in the project root.
-2. Update the values:
-   ```env
-   MONGODB_URI=mongodb+srv://<username>:<password>@<your-cluster-url>/ticketo?retryWrites=true&w=majority
-   DB_NAME=ticketo
-   NEXT_PUBLIC_USE_REAL_AUTH=true
-   BETTER_AUTH_SECRET=<your-custom-secret-key>
+---
+
+## ✨ Core Features
+
+### 🎟️ Event Browsing & Booking
+- **Browse Events** — Full event catalog with filters and search
+- **Event Details** — Descriptions, seat availability, and a live Booking Widget
+- **Stripe Checkout** — Secure payment for ticket booking
+- **Sandbox Fallback** — If Stripe keys are missing, automatically redirects to a simulated sandbox payment page (`/simulated-payment`) for full testing
+
+### 🔒 Authentication & Roles
+- **Better Auth** — Session-based auth with email/password and Google OAuth
+- **Three Roles** — Attendee, Organizer, Admin — each with private dashboards
+
+### 📊 Dashboards
+- **Attendee Dashboard** — Active tickets and transaction details
+- **Organizer Dashboard** — Event management, Add Event form, Organization profile settings
+- **Admin Dashboard** — Global transaction tables, user controls, event moderation, and statistics
+
+### 🎨 Design System (Glassmorphism)
+- **Outfit** font for clean, modern typography
+- Transparent dark backdrops with glass borders (`.glass`, `.glass-card`)
+- Micro-scaling hover effects, gradient transitions, and fade-in keyframes
+- Custom dark-mode scrollbars
+
+---
+
+## 📦 Dependencies
+
+### Production
+
+| Package | Version | Purpose |
+|---|---|---|
+| `next` | `16.2.7` | Framework |
+| `react` / `react-dom` | `19.2.4` | UI |
+| `better-auth` | `^1.6.14` | Auth |
+| `mongodb` | `^7.2.0` | Database |
+| `stripe` | `^22.3.0` | Payments |
+| `@heroui/react` | `^3.1.0` | Component library |
+| `recharts` | `^3.9.1` | Charts |
+| `react-icons` | `^5.6.0` | Icons |
+| `react-toastify` | `^11.1.0` | Notifications |
+| `kysely` | `^0.28.17` | SQL query builder (auth adapter) |
+
+### Development
+
+| Package | Purpose |
+|---|---|
+| `tailwindcss` `^4` | Styling |
+| `eslint`, `eslint-config-next` | Linting |
+
+---
+
+## 🚀 Run Locally
+
+### Prerequisites
+- **Node.js** v18 or higher
+- **MongoDB Atlas** URI
+- **Stripe** keys (optional — sandbox fallback available without them)
+
+### Steps
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/iMoloy/ticketo.git
+   cd ticketo
    ```
 
-### 💳 Stripe & Sandbox checkout
-- The platform supports live Stripe payment sessions for ticket booking and premium organizer status upgrades ($49 one-time).
-- **Graceful Sandboxing**: If Stripe credentials (`STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`) are missing, the checkout flow automatically redirects to a custom **Simulated Sandbox payment viewport** (`/simulated-payment`), allowing you to test bookings, seat decrements, and role upgrades without live API keys.
+2. **Install dependencies**
 
+   ```bash
+   npm install
+   ```
 
+3. **Configure environment**
+
+   Create `.env.local`:
+
+   ```env
+   MONGODB_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/ticketo
+   DB_NAME=ticketo
+   BETTER_AUTH_SECRET=your-custom-secret-key
+   NEXT_PUBLIC_USE_REAL_AUTH=true
+
+   # Optional — omit to use simulated sandbox checkout
+   STRIPE_SECRET_KEY=sk_test_...
+   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+   ```
+
+4. **Start the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000)
+
+### Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server |
+| `npm run build` | Build for production |
+| `npm run start` | Serve production build |
+| `npm run lint` | Run ESLint |
 
 ---
 
-## 🎯 Navigable Routes & Dashboards
+## 📍 Application Routes
 
-- 🏠 **Home Page (`/`)**: Main landing page with a hero banner, statistics, featured event list, testimonials, and organizer guides.
-- 🎟️ **Browse Events (`/events`)**: Lists all cards with filters.
-- 🏷️ **Event Details (`/events/[id]`)**: Showcases single event descriptions and the Booking Widget.
-- 💳 **Success Redirect (`/payment-success`)**: Stripe success landing view wrapped in Suspense.
-- 🔒 **Auth Pages (`/login` & `/register`)**: Responsive forms centered inside viewports.
-- 📊 **Attendee Dashboard (`/dashboard/attendee`)**: Shows active tickets and transaction details.
-- 💼 **Organizer Dashboard (`/dashboard/organizer`)**: Holds the Manage Events dashboard, Add Event form, and Organization profile settings.
-- 👑 **Admin Dashboard (`/dashboard/admin`)**: Shows global transaction tables, global statistics, user controls, and event moderations.
-
----
-
-## ✨ Design System (Premium Glassmorphism)
-
-- **Typography**: Fitted with the Google Font **Outfit** for clean typography.
-- **Visual Texture**: Transparent dark backdrops with thin glass border colors (`.glass`, `.glass-card`).
-- **Interactive Animations**: Micro-scaling, gradient transitions, and fade-in keyframes.
-- **Dark Mode Scrollbars**: Integrated custom sleek track and thumb details.
+| Route | Access | Description |
+|---|---|---|
+| `/` | Public | Homepage — hero, stats, featured events, testimonials |
+| `/events` | Public | Browse all events with filters |
+| `/events/[id]` | Public | Event detail and booking widget |
+| `/login`, `/register` | Public | Auth pages |
+| `/payment-success` | Public | Stripe success landing |
+| `/simulated-payment` | Public | Sandbox checkout (no Stripe keys) |
+| `/dashboard/attendee` | Private | Tickets and transactions |
+| `/dashboard/organizer` | Private | Manage events, add event, profile |
+| `/dashboard/admin` | Private | Global stats, user control, moderation |
 
 ---
 
-## 📄 License
+## 🔗 Resources
 
-This project is created for educational and portfolio purposes.
+- 🌐 **Live App** → [https://ticketo-app.vercel.app](https://ticketo-app.vercel.app)
+- 🐙 **GitHub** → [github.com/iMoloy/ticketo](https://github.com/iMoloy/ticketo)
+- 💼 **Author** → [linkedin.com/in/iMoloy](https://linkedin.com/in/iMoloy)
+
+---
+
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:2d1b69,50:1a0a2e,100:0d1117&height=100&section=footer&animation=fadeIn" width="100%" alt="Footer" />
+  <sub>Made with ❤️ by <strong>Moloy Krishna Paul</strong></sub>
+</div>
